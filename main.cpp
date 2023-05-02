@@ -5,45 +5,71 @@ using namespace std;
 class Commensal
 {
 public:
-    Commensal()
-    {
-    }
     ~Commensal()
     {
     }
-    virtual void EatFood() = 0;
+    virtual void eatFood() = 0;
 };
 
 class Chef
 {
 public:
-    Chef()
-    {
-    }
     ~Chef()
     {
     }
-    virtual void DoCooking() = 0;
+    virtual void doCooking() = 0;
+};
+
+class Child : public Commensal
+{
+private:
+    string name, lastname;
+
+public:
+    Child(string name, string lastname)
+    {
+        this->name = name;
+        this->lastname = lastname;
+    }
+    ~Child()
+    {
+    }
+    void eatFood()
+    {
+        cout << "Child " << name << " " << lastname << " Eating" << endl;
+    }
+    string getName()
+    {
+        return name;
+    }
 };
 
 class Parent : public Commensal, Chef
 {
+protected:
+    int hunger;
+
 public:
     Parent()
     {
+        this->hunger = 0;
     }
     ~Parent()
     {
     }
-    void DoCooking()
+    void doCooking()
     {
-        cout << "Parent Cooking" << endl;
+        this->hunger += 10;
+        cout << "Parent Cooking "
+             << "Your hunger meter is: " << this->hunger << endl;
     }
-    void EatFood()
+    void eatFood()
     {
-        cout << "Parent Eating" << endl;
+        this->hunger -= 10;
+        cout << "Parent Eating "
+             << "Your hunger meter is: " << this->hunger << endl;
     }
-    virtual void Raise() = 0;
+    virtual void raise(Child *child) = 0;
 };
 
 class Father : public Parent
@@ -60,17 +86,10 @@ public:
     ~Father()
     {
     }
-    void DoCooking() // override de los metodos de Parent
-    {
-        cout << "Parent " << name << " Cooking" << endl;
-    }
-    void EatFood() // override de los metodos de Parent
-    {
-        cout << "Parent " << name << " Eating" << endl;
-    }
-    void Raise()
+    void raise(Child *child)
     {
         cout << "Father " << name << " " << lastname << " Raising" << endl;
+        cout << "His son: " << child->getName() << endl;
     }
 };
 
@@ -88,51 +107,37 @@ public:
     ~Mother()
     {
     }
-    void DoCooking() // override de los metodos de Parent
-    {
-        cout << "Parent " << name << " Cooking" << endl;
-    }
-    void EatFood() // override de los metodos de Parent
-    {
-        cout << "Parent " << name << " Eating" << endl;
-    }
-    void Raise()
+    void raise(Child *child)
     {
         cout << "Mother " << name << " " << lastname << " Raising" << endl;
-    }
-};
-
-class Child : public Commensal
-{
-private:
-    string name, lastname;
-
-public:
-    Child(string name, string lastname)
-    {
-        this->name = name;
-        this->lastname = lastname;
-    }
-    ~Child()
-    {
-    }
-    void EatFood()
-    {
-        cout << "Child " << name << " " << lastname << " Eating" << endl;
+        cout << "His son: " << child->getName() << endl;
     }
 };
 
 int main()
 {
-    Father father("Guillermo", "Guerstein");
-    Mother mother("Silvia", "Rodriguez");
-    Child child("Tadeo", "Guerstein");
+    Father *father = new Father("Guillermo", "Guerstein");
+    Mother *mother = new Mother("Silvia", "Rodriguez");
+    Child *child = new Child("Tadeo", "Guerstein");
+    // Father father("Guillermo", "Guerstein");
+    // Mother mother("Silvia", "Rodriguez");
+    // Child child("Tadeo", "Guerstein");
 
-    father.DoCooking();
-    father.Raise();
-    mother.DoCooking();
-    mother.Raise();
-    child.EatFood();
+    // father.doCooking();
+    // father.raise(child);
+    // mother.doCooking();
+    // mother.raise(child);
+    // child.eatFood();
+    father->raise(child);
+    father->doCooking();
+    father->eatFood();
+    mother->raise(child);
+    mother->doCooking();
+    mother->eatFood();
+    child->eatFood();
 
+    delete father;
+    delete mother;
+    delete child;
     return 0;
 }
