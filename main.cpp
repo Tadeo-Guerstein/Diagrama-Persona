@@ -69,7 +69,7 @@ public:
         cout << "Parent Eating "
              << "Your hunger meter is: " << this->hunger << endl;
     }
-    virtual void raise(Child *child[]) = 0;
+    virtual void raise(Child *children[]) = 0;
 };
 
 class Father : public Parent
@@ -86,12 +86,12 @@ public:
     ~Father()
     {
     }
-    void raise(Child *child[])
+    void raise(Child *children[])
     {
         cout << "Father " << name << " " << lastname << " Raising" << endl;
         for (int i = 0; i < 6; i++)
         {
-            cout << "His son: " << child[i]->getName() << endl;
+            cout << "His son: " << children[i]->getName() << endl;
         }
     }
 };
@@ -110,12 +110,12 @@ public:
     ~Mother()
     {
     }
-    void raise(Child *child[])
+    void raise(Child *children[])
     {
         cout << "Mother " << name << " " << lastname << " Raising" << endl;
         for (int i = 0; i < 6; i++)
         {
-            cout << "His son: " << child[i]->getName() << endl;
+            cout << "His son: " << children[i]->getName() << endl;
         }
     }
 };
@@ -124,28 +124,28 @@ int main()
 {
     Father *father = new Father("Guillermo", "Guerstein");
     Mother *mother = new Mother("Silvia", "Rodriguez");
-    Child *child[6];
+    Child *children[6];
 
-    child[0] = new Child("Victoria", "Fernandez");
-    child[1] = new Child("Nicolas", "Pereyra");
-    child[2] = new Child("Maira", "Rodriguez");
-    child[3] = new Child("Tadeo", "Guerstein");
-    child[4] = new Child("Ariana", "Gutierrez");
-    child[5] = new Child("Lorenzo", "Gonzales");
+    children[0] = new Child("Victoria", "Fernandez");
+    children[1] = new Child("Nicolas", "Pereyra");
+    children[2] = new Child("Maira", "Rodriguez");
+    children[3] = new Child("Tadeo", "Guerstein");
+    children[4] = new Child("Ariana", "Gutierrez");
+    children[5] = new Child("Lorenzo", "Gonzales");
 
-    father->raise(child);
+    father->raise(children);
     father->doCooking();
     father->eatFood();
-    mother->raise(child);
+    mother->raise(children);
     mother->doCooking();
     mother->eatFood();
     for (int i = 0; i < 6; i++)
     {
-        child[i]->eatFood();
+        children[i]->eatFood();
     }
 
     delete father;
     delete mother;
-    delete child[6];
+    delete children[6];
     return 0;
 }
